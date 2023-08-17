@@ -51,6 +51,9 @@ android {
 
 dependencies {
 
+    //navigation
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha04")
+
     //Icons
     implementation("androidx.compose.material:material-icons-extended")
 

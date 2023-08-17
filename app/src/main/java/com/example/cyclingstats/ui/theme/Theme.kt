@@ -103,6 +103,9 @@ fun schemeColor(color: String, isSystemInDarkTheme: Boolean): Color{
         "fou" -> {
             if(isSystemInDarkTheme) DarkFou else LightFou
         }
+        "black" -> {
+            if(isSystemInDarkTheme) Color.White else Color.Black
+        }
         else -> Color.Transparent
     }
 }
