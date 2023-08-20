@@ -3,6 +3,7 @@ package com.example.cyclingstats.composables
 import android.widget.Space
 import androidx.annotation.MainThread
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,7 +43,10 @@ fun TrainingListItem(item: Training, isSystemInDarkTheme: Boolean, navController
         Modifier
             .height(120.dp)
             .fillMaxWidth()
-            .background(color = schemeColor("prim", isSystemInDarkTheme)),
+            .background(color = schemeColor("prim", isSystemInDarkTheme))
+            .clickable {
+                navController.navigate(Screen.TrainingView.withArgs(item.index.toString()))
+            },
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Column(
@@ -93,24 +97,6 @@ fun TrainingListItem(item: Training, isSystemInDarkTheme: Boolean, navController
                 color = schemeColor("black", isSystemInDarkTheme),
                 modifier = Modifier.fillMaxWidth(0.5f)
             )
-        }
-        Column(
-            verticalArrangement = Arrangement.Center
-        ) {
-            IconButton(
-                modifier = Modifier.size(25.dp),
-                onClick = {
-                    navController.navigate(Screen.TrainingView.withArgs(item.index.toString()))
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Info",
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    tint = schemeColor("sec", isSystemInDarkTheme)
-                )
-            }
         }
     }
 }

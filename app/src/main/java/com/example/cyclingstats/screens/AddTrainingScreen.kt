@@ -255,6 +255,7 @@ fun AddTraining(navController: NavController, trainingViewModel: TrainingViewMod
                                 .verticalScroll(rememberScrollState())
                         ) {
                             Spacer(modifier = Modifier.height(85.dp))
+                            /*TODO->DATE-PICKER*/
                             OutlinedTextField(
                                 modifier = Modifier
                                     .padding(bottom = 10.dp)
@@ -281,6 +282,7 @@ fun AddTraining(navController: NavController, trainingViewModel: TrainingViewMod
                                     focusedLabelColor = Color.Black
                                 )
                             )
+                            /*TODO->TIME-PICKER*/
                             OutlinedTextField(
                                 modifier = Modifier
                                     .padding(bottom = 10.dp)
@@ -307,6 +309,7 @@ fun AddTraining(navController: NavController, trainingViewModel: TrainingViewMod
                                     focusedLabelColor = Color.Black
                                 )
                             )
+                            /*TODO->TIME-PICKER*/
                             OutlinedTextField(
                                 modifier = Modifier
                                     .padding(bottom = 10.dp)
@@ -333,6 +336,7 @@ fun AddTraining(navController: NavController, trainingViewModel: TrainingViewMod
                                     focusedLabelColor = Color.Black
                                 )
                             )
+                            /*TODO->TIME-PICKER*/
                             OutlinedTextField(
                                 modifier = Modifier
                                     .padding(bottom = 10.dp)
@@ -359,6 +363,7 @@ fun AddTraining(navController: NavController, trainingViewModel: TrainingViewMod
                                     focusedLabelColor = Color.Black
                                 )
                             )
+                            /*TODO->TIME-PICKER*/
                             OutlinedTextField(
                                 modifier = Modifier
                                     .padding(bottom = 10.dp)

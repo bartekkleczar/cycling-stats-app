@@ -198,7 +198,15 @@ fun TrainingView(navController: NavController, trainingViewModel: TrainingViewMo
                                         )
                                     )
                                 }
-                                IconButton(onClick = { /*TODO*/ }) {
+                                IconButton(onClick = {
+                                    if(index != null){
+                                        navController.navigate(
+                                            Screen.EditTraining.withArgs(
+                                                index
+                                            )
+                                        )
+                                    }
+                                }) {
                                     Icon(
                                         imageVector = Icons.Default.Edit,
                                         contentDescription = "Edit training",

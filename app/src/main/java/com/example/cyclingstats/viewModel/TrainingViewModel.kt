@@ -37,4 +37,23 @@ class TrainingViewModel(private val repository: TrainingRepository): ViewModel()
             repository.deleteAll()
         }
     }
+    suspend fun getTotalDistance(): Float {
+        return repository.getTotalDistance()
+    }
+
+    suspend fun getLongestTime(): String {
+        return repository.getLongestTime()
+    }
+
+    suspend fun getHighestSpeed(): String {
+        return repository.getHighestSpeed()
+    }
+    suspend fun getLongestDistance(): String {
+        return repository.getLongestDistance()
+    }
+
+    suspend fun getTrainingByIndex(index: Int): Training {
+        return repository.getTrainingByIndex(index)
+    }
+
 }

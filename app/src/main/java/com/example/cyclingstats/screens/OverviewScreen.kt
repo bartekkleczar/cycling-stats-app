@@ -43,6 +43,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -192,7 +194,24 @@ fun OverviewScreen(navController: NavController, trainingViewModel: TrainingView
                         )
                     }
                 ) { values ->
-                    val preferences = remember { MyPreferences(context) }
+                    val totalDistance = remember { mutableStateOf(0f) }
+                    val longestTime = remember { mutableStateOf("0:00 h") }
+                    val highestSpeed = remember { mutableStateOf("0 km/h") }
+                    val longestDistance = remember { mutableStateOf("0 km") }
+
+                    val trainingsList by trainingViewModel.trainings.collectAsState(emptyList()) // Pobieranie listy treningów
+
+                    LaunchedEffect(trainingsList) {
+                        val distance = trainingViewModel.getTotalDistance()
+                        val time = trainingViewModel.getLongestTime()
+                        val speed = trainingViewModel.getHighestSpeed()
+                        val route = trainingViewModel.getLongestDistance()
+
+                        totalDistance.value = distance
+                        longestTime.value = time
+                        highestSpeed.value = speed
+                        longestDistance.value = route
+                    }
                     Column(
                         verticalArrangement = Arrangement.Bottom,
                         modifier = Modifier
@@ -224,7 +243,7 @@ fun OverviewScreen(navController: NavController, trainingViewModel: TrainingView
                                     )
                                     Spacer(modifier = Modifier.height(20.dp))
                                     Text(
-                                        text = "938 km",
+                                        text = "${totalDistance.value} km",
                                         fontSize = 35.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.Black
@@ -253,17 +272,18 @@ fun OverviewScreen(navController: NavController, trainingViewModel: TrainingView
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Text(
-                                        text = "The longest training time",
+                                        text = "The longest distance",
                                         fontSize = 25.sp,
                                         textAlign = TextAlign.Center,
                                         color = Color.Black
                                     )
                                     Spacer(modifier = Modifier.height(20.dp))
                                     Text(
-                                        text = "3:36 h",
+                                        text = longestDistance.value,
                                         fontSize = 35.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.Black
+                                        color = Color.Black,
+                                        textAlign = TextAlign.Center
                                     )
                                 }
                             }
@@ -300,7 +320,7 @@ fun OverviewScreen(navController: NavController, trainingViewModel: TrainingView
                                         )
                                         Spacer(modifier = Modifier.height(20.dp))
                                         Text(
-                                            text = "60 km/h",
+                                            text = highestSpeed.value,
                                             fontSize = 35.sp,
                                             fontWeight = FontWeight.Bold,
                                             color = Color.Black
@@ -327,14 +347,14 @@ fun OverviewScreen(navController: NavController, trainingViewModel: TrainingView
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Text(
-                                            text = "The longest route",
+                                            text = "The longest training time",
                                             fontSize = 25.sp,
                                             textAlign = TextAlign.Center,
                                             color = Color.Black
                                         )
                                         Spacer(modifier = Modifier.height(20.dp))
                                         Text(
-                                            text = "45 km",
+                                            text = longestTime.value,
                                             fontSize = 35.sp,
                                             fontWeight = FontWeight.Bold,
                                             color = Color.Black
