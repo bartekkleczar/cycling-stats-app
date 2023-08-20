@@ -1,4 +1,4 @@
-package com.example.cyclingstats.Screens
+package com.example.cyclingstats.screens
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Spacer
@@ -6,16 +6,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DirectionsBike
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.DirectionsBike
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,18 +42,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.cyclingstats.db.Training
+import com.example.cyclingstats.functions.schemeColor
 import com.example.cyclingstats.navigation.NavigationItem
 import com.example.cyclingstats.navigation.Screen
 import com.example.cyclingstats.ui.theme.CyclingStatsTheme
-import com.example.cyclingstats.ui.theme.schemeColor
+import com.example.cyclingstats.viewModel.TrainingViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Settings(navController: NavController){
+fun TrainingView(navController: NavController, trainingViewModel: TrainingViewModel, index: String?) {
     CyclingStatsTheme {
         val items = listOf(
+
             NavigationItem(
                 title = "Overview",
                 selectedIcon = Icons.Filled.BarChart,
@@ -60,13 +69,19 @@ fun Settings(navController: NavController){
                 selectedIcon = Icons.Filled.DirectionsBike,
                 unselectedIcon = Icons.Outlined.DirectionsBike,
                 route = Screen.Trainings.route,
-                badgeCount = 45
+                badgeCount = trainingViewModel.trainings.collectAsStateWithLifecycle(initialValue = emptyList()).value.size
             ),
             NavigationItem(
                 title = "Settings",
                 selectedIcon = Icons.Filled.Settings,
                 unselectedIcon = Icons.Outlined.Settings,
                 route = Screen.Settings.route
+            ),
+            NavigationItem(
+                title = "Your Training",
+                selectedIcon = Icons.Filled.DirectionsBike,
+                unselectedIcon = Icons.Outlined.DirectionsBike,
+                route = "None"
             ),
         )
         Surface(
@@ -76,7 +91,7 @@ fun Settings(navController: NavController){
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val scope = rememberCoroutineScope()
             var selectedItemIndex by rememberSaveable {
-                mutableStateOf(2)
+                mutableStateOf(3)
             }
             ModalNavigationDrawer(
                 drawerContent = {
@@ -98,7 +113,7 @@ fun Settings(navController: NavController){
                                 },
                                 selected = index == selectedItemIndex,
                                 onClick = {
-                                    navController.navigate(item.route)
+                                    if(item.route != "None") navController.navigate(item.route)
                                     selectedItemIndex = index
                                     scope.launch {
                                         drawerState.close()
@@ -131,7 +146,7 @@ fun Settings(navController: NavController){
                         CenterAlignedTopAppBar(
                             title = {
                                 Text(
-                                    text = "Settings",
+                                    text = "Your Training",
                                     fontSize = 25.sp,
                                     fontWeight = FontWeight.Bold,
                                 )
@@ -149,8 +164,74 @@ fun Settings(navController: NavController){
                                 }
                             }
                         )
+                    },
+                    bottomBar = {
+                        BottomAppBar(
+                            actions = {
+                                IconButton(onClick = {
+                                    trainingViewModel.delete(
+                                        Training(
+                                            index = index?.toInt() ?: -1,
+                                            trainingDate = "",
+                                            trainingTime = "",
+                                            wholeTime = "",
+                                            distance = 0f,
+                                            averageSpeed = 0f,
+                                            maxSpeed = 0f,
+                                            averagePulse = 0,
+                                            maxPulse = 0,
+                                            calories = 0,
+                                            averagePace = "",
+                                            maxPace = "",
+                                            startTime = "",
+                                            finishTime = "",
+                                        )
+                                    )
+                                    navController.navigate(Screen.Trainings.route)
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = "Delete training",
+                                        tint = schemeColor(
+                                            "black",
+                                            isSystemInDarkTheme()
+                                        )
+                                    )
+                                }
+                                IconButton(onClick = { /*TODO*/ }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Edit,
+                                        contentDescription = "Edit training",
+                                        tint = schemeColor(
+                                            "black",
+                                            isSystemInDarkTheme()
+                                        )
+                                    )
+                                }
+                            },
+                            floatingActionButton = {
+                                FloatingActionButton(
+                                    onClick = { navController.navigate(Screen.AddTraining.route) },
+                                    containerColor = schemeColor(
+                                        "sec",
+                                        isSystemInDarkTheme()
+                                    )
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = "New training",
+                                        tint = schemeColor(
+                                            "black",
+                                            isSystemInDarkTheme()
+                                        )
+                                    )
+                                }
+                            }
+                        )
                     }
-                ) {}
+                ) { values ->
+
+                }
             }
         }
     }

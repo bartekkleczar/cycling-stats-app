@@ -33,6 +33,8 @@ private val DarkColorScheme = darkColorScheme(
     onTertiary = DarkTer,
     onBackground = DarkPrim,
     //onSurface = DarkPrim,
+    outline = DarkPrim,
+    outlineVariant = DarkPrim,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -54,6 +56,8 @@ private val LightColorScheme = lightColorScheme(
     onTertiary = Color.Black,
     onBackground = LightPrim,
     //onSurface = LightPrim,
+    outline = Color.Black,
+    outlineVariant = Color.Black,
 
 )
 
@@ -89,23 +93,3 @@ fun CyclingStatsTheme(
     )
 }
 
-fun schemeColor(color: String, isSystemInDarkTheme: Boolean): Color{
-    return when(color){
-        "prim" -> {
-            if(isSystemInDarkTheme) DarkPrim else LightPrim
-        }
-        "sec" -> {
-            if(isSystemInDarkTheme) DarkSec else LightSec
-        }
-        "ter" -> {
-            if(isSystemInDarkTheme) DarkTer else LightTer
-        }
-        "fou" -> {
-            if(isSystemInDarkTheme) DarkFou else LightFou
-        }
-        "black" -> {
-            if(isSystemInDarkTheme) Color.White else Color.Black
-        }
-        else -> Color.Transparent
-    }
-}

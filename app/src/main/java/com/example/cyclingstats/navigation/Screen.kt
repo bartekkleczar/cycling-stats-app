@@ -6,6 +6,7 @@ sealed class Screen(val route: String){
     object AddTraining: Screen("add_training")
     object EditTraining: Screen("edit_training")
     object Settings: Screen("settings")
+    object TrainingView: Screen("training_view")
 
     fun withArgs(vararg args: String): String{
         return buildString {
