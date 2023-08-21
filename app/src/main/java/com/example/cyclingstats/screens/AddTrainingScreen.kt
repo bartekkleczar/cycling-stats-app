@@ -72,6 +72,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.cyclingstats.MainActivity
 import com.example.cyclingstats.functions.*
 import com.example.cyclingstats.navigation.NavigationItem
 import com.example.cyclingstats.navigation.Screen
@@ -192,7 +193,7 @@ fun AddTraining(navController: NavController, trainingViewModel: TrainingViewMod
                         )
                     },
                 ) { values ->
-
+                    /*TODO->DATA-VALIDATION*/
                     Column {
                         var trainingDate by remember {
                             mutableStateOf("")
@@ -679,7 +680,7 @@ fun AddTraining(navController: NavController, trainingViewModel: TrainingViewMod
                                         averageSpeed = avgSpeed,
                                         maxSpeed = maxSpeed,
                                         averagePulse = averagePulse.toInt(),
-                                        maxPulse = averagePulse.toInt(),
+                                        maxPulse = maxPulse.toInt(),
                                         calories = calories.toInt(),
                                         averagePace = avgPace,
                                         maxPace = maxPace,

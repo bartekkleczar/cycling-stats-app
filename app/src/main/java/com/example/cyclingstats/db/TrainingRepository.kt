@@ -1,12 +1,7 @@
 package com.example.cyclingstats.db
 
-import androidx.room.Index
-import com.example.cyclingstats.functions.formatFloat
-import com.example.cyclingstats.functions.formatHours
-import com.example.cyclingstats.functions.formatMinutes
-import com.example.cyclingstats.functions.makeTraining
+import com.example.cyclingstats.MainActivity
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 
 class TrainingRepository(private val dao: TrainingDao) {
     val trainings = dao.getAllTrainings()
@@ -29,7 +24,7 @@ class TrainingRepository(private val dao: TrainingDao) {
 
     suspend fun getTotalDistance(): Float {
         val trainingsList = trainings.first()
-        return trainingsList.sumOf { it.distance.toDouble() }.toFloat()
+        return String.format("%.2f" ,trainingsList.sumOf { (it.distance.toDouble()) }).toFloat()
     }
 
     suspend fun getLongestTime(): String {
@@ -80,32 +75,17 @@ class TrainingRepository(private val dao: TrainingDao) {
 
         val longestDistance = distances.maxOrNull() ?: 0f
 
-        return "$longestDistance km"
+        return "${String.format("%.2f",longestDistance)} km"
     }
     
     suspend fun getTrainingByIndex(index: Int): Training {
         val trainings = trainings.first()
 
         if (trainings.isEmpty()) {
-            return makeTraining(
-                index = -1,
-                trainingDate = "Err",
-                trainingTime = "Err",
-                wholeTime = "Err",
-                distance = "0",
-                averageSpeed = "0",
-                maxSpeed = "0",
-                averagePulse = 0,
-                maxPulse = 0,
-                calories = 0,
-                averagePace = "Err",
-                maxPace = "Err",
-                startTime = "Err",
-                finishTime = "Err",
-            )
+            MainActivity.defaultTraining()
         }
 
-        var out = makeTraining(index = -2, trainingDate = "Err", trainingTime = "Err", wholeTime = "Err", distance = "0", averageSpeed = "0", maxSpeed = "0", averagePulse = 0, maxPulse = 0, calories = 0, averagePace = "Err", maxPace = "Err", startTime = "Err", finishTime = "Err",)
+        var out = MainActivity.defaultTraining(-2)
 
         trainings.map { training ->
             if(training.index == index) {

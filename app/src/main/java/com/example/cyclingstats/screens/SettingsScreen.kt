@@ -152,7 +152,9 @@ fun Settings(navController: NavController, trainingViewModel: TrainingViewModel)
                             }
                         )
                     }
-                ) {}
+                ) {values ->
+                    // TODO
+                }
             }
         }
     }

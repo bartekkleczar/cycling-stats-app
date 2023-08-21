@@ -35,14 +35,14 @@ fun Navigation(trainingViewModel: TrainingViewModel, context: Context) {
             route = Screen.TrainingView.route + "/{index}",
             arguments = listOf(
                 navArgument("index") {
-                    type = NavType.StringType
-                    defaultValue = "-1"
+                    type = NavType.IntType
+                    defaultValue = -1
                     nullable = false
                 }
             )
         ) { entry ->
             TrainingView(navController, trainingViewModel,
-                index = entry.arguments?.getString("index"),
+                index = entry.arguments?.getInt("index"),
             )
         }
         //Edit Training

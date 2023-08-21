@@ -35,6 +35,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.cyclingstats.MainActivity
 import com.example.cyclingstats.db.Training
 import com.example.cyclingstats.functions.schemeColor
 import com.example.cyclingstats.navigation.NavigationItem
@@ -54,7 +56,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TrainingView(navController: NavController, trainingViewModel: TrainingViewModel, index: String?) {
+fun TrainingView(navController: NavController, trainingViewModel: TrainingViewModel, index: Int?) {
     CyclingStatsTheme {
         val items = listOf(
 
@@ -202,7 +204,7 @@ fun TrainingView(navController: NavController, trainingViewModel: TrainingViewMo
                                     if(index != null){
                                         navController.navigate(
                                             Screen.EditTraining.withArgs(
-                                                index
+                                                index.toString()
                                             )
                                         )
                                     }
@@ -238,7 +240,52 @@ fun TrainingView(navController: NavController, trainingViewModel: TrainingViewMo
                         )
                     }
                 ) { values ->
+                    val trainingsList by trainingViewModel.trainings.collectAsStateWithLifecycle(emptyList())
+                    val training = MainActivity.defaultTraining(-3)
 
+                    var trainingDate by remember { mutableStateOf(training.trainingDate) }
+
+                    var trainingTime by remember { mutableStateOf(training.trainingTime) }
+
+                    var wholeTime by remember { mutableStateOf(training.wholeTime) }
+
+                    var startTime by remember { mutableStateOf(training.startTime) }
+
+                    var finishTime by remember { mutableStateOf(training.finishTime) }
+
+                    var distance by remember { mutableStateOf(training.distance.toString()) }
+
+                    var avgSpeed by remember { mutableStateOf(training.averageSpeed.toString()) }
+
+                    var maxSpeed by remember { mutableStateOf(training.maxSpeed.toString()) }
+
+                    var avgPulse by remember { mutableStateOf(training.averagePulse.toString()) }
+
+                    var maxPulse by remember { mutableStateOf(training.maxPulse.toString()) }
+
+                    var calories by remember { mutableStateOf(training.calories.toString()) }
+
+                    var avgPace by remember { mutableStateOf(training.averagePace) }
+
+                    var maxPace by remember { mutableStateOf(training.maxPace) }
+
+                    for(it in trainingsList) {
+                        if(it.index == index) {
+                            trainingDate = it.trainingDate
+                            trainingTime = it.trainingTime
+                            wholeTime = it.wholeTime
+                            startTime = it.startTime
+                            finishTime = it.finishTime
+                            distance = it.distance.toString()
+                            avgSpeed = it.averageSpeed.toString()
+                            maxSpeed = it.maxSpeed.toString()
+                            avgPulse = it.averagePulse.toString()
+                            maxPulse = it.maxPulse.toString()
+                            calories = it.calories.toString()
+                            avgPace = it.averagePace
+                            maxPace = it.maxPace
+                        }
+                    }
                 }
             }
         }

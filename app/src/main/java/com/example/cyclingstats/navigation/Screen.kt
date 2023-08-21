@@ -8,7 +8,7 @@ sealed class Screen(val route: String){
     object Settings: Screen("settings")
     object TrainingView: Screen("training_view")
 
-    fun withArgs(vararg args: String): String{
+    fun withArgs(vararg args: Any): String{
         return buildString {
             append(route)
             args.forEach { arg ->
