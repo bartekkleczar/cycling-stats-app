@@ -82,6 +82,7 @@ import androidx.navigation.NavController
 import com.example.cyclingstats.MainActivity
 import com.example.cyclingstats.db.Training
 import com.example.cyclingstats.functions.formatFloat
+import com.example.cyclingstats.functions.insertUpdate
 import com.example.cyclingstats.functions.makeTraining
 import com.example.cyclingstats.functions.schemeColor
 import com.example.cyclingstats.navigation.NavigationItem
@@ -215,6 +216,9 @@ fun EditTraining(
                     )
                     var training = MainActivity.defaultTraining(-3)
 
+
+                    var trainingIndex by remember { mutableStateOf(training.index) }
+
                     var trainingDate by remember { mutableStateOf(training.trainingDate) }
 
                     var trainingTime by remember { mutableStateOf(training.trainingTime) }
@@ -243,9 +247,10 @@ fun EditTraining(
 
                     for (it in trainingsList) {
                         if (it.index == index) {
-                            Log.d("Main", it.index.toString())
-                            Log.d("Main", "${it.index} -- $index || $it")
+                            /*Log.d("Main", it.index.toString())
+                            Log.d("Main", "${it.index} -- $index || $it")*/
 
+                            trainingIndex = it.index
                             trainingDate = it.trainingDate
                             trainingTime = it.trainingTime
                             wholeTime = it.wholeTime
@@ -740,22 +745,23 @@ fun EditTraining(
                                     contentColor = schemeColor("black", isSystemInDarkTheme())
                                 ),
                                 onClick = {
+                                    Log.e("Main", training.index.toString())
                                     trainingViewModel.update(
                                         makeTraining(
-                                            index = training.index,
-                                            trainingDate = trainingDate,
-                                            trainingTime = trainingTime,
-                                            wholeTime = wholeTime,
-                                            distance = distance,
-                                            averageSpeed = avgSpeed,
-                                            maxSpeed = maxSpeed,
-                                            averagePulse = avgPulse.toInt(),
-                                            maxPulse = avgPulse.toInt(),
-                                            calories = calories.toInt(),
-                                            averagePace = avgPace,
-                                            maxPace = maxPace,
-                                            startTime = startTime,
-                                            finishTime = finishTime,
+                                            index = trainingIndex,
+                                            trainingDate = insertUpdate(trainingDate, trainingDateEdit),
+                                            trainingTime = insertUpdate(trainingTime, trainingTimeEdit),
+                                            wholeTime = insertUpdate(wholeTime, wholeTimeEdit),
+                                            distance = insertUpdate(distance, distanceEdit),
+                                            averageSpeed = insertUpdate(avgSpeed, avgSpeedEdit),
+                                            maxSpeed = insertUpdate(maxSpeed, maxSpeedEdit),
+                                            averagePulse = insertUpdate(avgPulse, avgPulseEdit).toInt(),
+                                            maxPulse = insertUpdate(maxPulse, maxPulseEdit).toInt(),
+                                            calories = insertUpdate(calories, caloriesEdit).toInt(),
+                                            averagePace = insertUpdate(avgPace, avgPaceEdit),
+                                            maxPace = insertUpdate(maxPace, maxPaceEdit),
+                                            startTime = insertUpdate(startTime, startTimeEdit),
+                                            finishTime = insertUpdate(finishTime, finishTimeEdit),
                                         )
                                     )
                                     navController.navigate(Screen.Trainings.route)
